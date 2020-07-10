@@ -243,7 +243,7 @@ EMHOBJS = libmpbpush3_h.o libvmpbpush3_h.o libmpcurd3_h.o libvmpcurd3_h.o
 EDHOBJS = libmpdpush3_h.o libvmpdpush3_h.o
 
 ESMODS = input3mod.o modmpinit3.o modmppush3.o modmpsort3.o modmpgard3.o \
-modmpfft3.o modmpfield3.o
+modmpfft3.o modmpfield3.o ext_driver3.o
 
 EMMODS = modmpbpush3.o modmpcurd3.o
 
@@ -478,6 +478,9 @@ modmpdiag3.o : modmpdiag3.f90 mppmod3.o libmpdiag3_h.o
 
 ompplib3.o : ompplib3.f90 modmpsort3.o modmpfft3.o modmpgard3.o mppmod3.o
 	$(FC90) $(OPTS90) -o ompplib3.o -c ompplib3.f90
+	
+ext_driver3.o : ext_driver3.f
+	$(FC90) $(OPTS90) -o ext_driver3.o -c ext_driver3.f
 
 mpsimul3.o : mpsimul3.f03 $(ESMODS) modmpdiag3.o mppmod3.o
 	$(FC90) $(OPTS90) -o mpsimul3.o -c $(FF03) mpsimul3.f03
