@@ -11,6 +11,7 @@
       use omplib
       use ompplib3
       use f3
+      use ext_driver3
       implicit none
 !
 ! idimp = number of particle coordinates = 6
@@ -1352,6 +1353,11 @@
          endif
       endif
 !
+!External driver
+      select case (driver_select)
+            case default
+                  call do_nothing()
+      end select
 ! push electrons with OpenMP:
 ! updates ppart and wke, and possibly ncl, ihole, irc
       wke = 0.0
