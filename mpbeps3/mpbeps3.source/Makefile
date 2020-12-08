@@ -17,7 +17,6 @@
 #CCOPTS = -O3 -Wall -std=c99
 
 #LOPTS = -lgomp
-LOPTS = -openmp
 #LEGACY =
 
 # Makefile Intel compiler with Mac OS X
@@ -43,25 +42,25 @@ LOPTS = -openmp
 # Makefile Intel compiler with Linux
 
 # MPI
-#MPIFC = mpiifort -qopenmp
-#MPICC = mpiicc -qopenmp
+MPIFC = mpiifort -qopenmp
+MPICC = mpiicc -qopenmp
 
-#FC90 = ifort -qopenmp
-#CC = icc
+FC90 = ifort -qopenmp
+CC = icc
 
-#OPTS90 = -O3
+OPTS90 = -O3
 #OPTS90 = -O3 -axAVX -qopt-report=5 -qopt-report-phase=vec
 #OPTS90 = -O3 -axAVX2 -qopt-report=5 -qopt-report-phase=vec
 #OPTS90 = -O3 -axMIC-AVX512 -qopt-report=5 -qopt-report-phase=vec
 #OPTS90 = -O3 -r8
 #OPTS90 = -O3 -CB -r8 -warn all -std90
 
-#CCOPTS = -O3 -std=c99
+CCOPTS = -O3 -std=c99
 #CCOPTS = -O3 -no-vec -Wall -std=c99
 
-#FF03 = -Tf
+FF03 = -Tf
 
-#LEGACY = -nofor_main
+LEGACY = -nofor_main
 
 # Makefile gfortran compiler with Linux
 
@@ -75,11 +74,11 @@ LOPTS = -openmp
 PFC = f2py --fcompiler=gnu95
 PCC = f2py --compiler=unix
 
-OPTS90 = -O3
+#OPTS90 = -O3
 #OPTS90 = -O3 -fdefault-real-8 -fdefault-double-8
 #OPTS90 = -O3 -fbounds-check -fdefault-real-8 -fdefault-double-8 -Wall -std=f95
 
-CCOPTS = -O3 -std=c99
+#CCOPTS = -O3 -std=c99
 #CCOPTS = -O3 -Wall -std=c99
 
 #Python
@@ -90,7 +89,7 @@ PYCCOPTS = $(CCOPTS) -fPIC
 #export CFLAGS = -O3 -fopenmp -Wall
 
 #LOPTS = -lgomp
-LEGACY =
+#LEGACY =
 
 # Makefile PGI compiler with Linux
 
@@ -113,21 +112,65 @@ LEGACY =
 # Makefile Cray compiler with Linux
 
 # MPI
-MPIFC = ftn -h omp
-MPICC = cc -h omp
+#MPIFC = ftn -h omp
+#MPICC = cc -h omp
 
-FC90 = ftn -h omp
-CC = cc -h omp
+#FC90 = ftn -h omp
+#CC = cc
 
-OPTS90 = -O3
+#OPTS90 = -O 3
 #OPTS90 = -O 3 -s real64
 #OPTS90 = -O 3 -R b -s real64 -en
 
-CCOPTS = -O3 -h c99 -h conform
+#CCOPTS = -O 3 -h c99 -h conform
 
 #LEGACY =
+###########################
+#debug
 
-#
+
+#HDF_HOME = /usr/local
+#H5_ROOT = $(HDF_HOME)
+#HDF_INCPATH = $(HDF_HOME)/include
+#H5_FLINKFLAGS  = -L$(H5_ROOT)/lib -lhdf5_fortran -lhdf5 -lz -lm
+
+# MacMPI
+
+FC90 = mpicc
+FC77 = mpif90
+CC = mpicc
+
+OPTS90 = -O3 -r8 -ffree-form
+OPTS77 = -O3 -r8 
+CCOPTS = -O3
+MOPTS = 
+MBOPTS = 
+LOPTS =
+LEGACY =
+
+#MPOBJS = MacMPf77.o MacMP.o
+
+#LIBS = $(CARBON) -lSystemStubs
+
+# Makefile gfortran compiler with MacOS X
+
+# MacMPI
+MPIFC = mpif90
+MPIFC77 = mpif90
+
+FC90 = mpif90
+FC77 = mpif90
+CC = mpicc
+
+OPTS90 = -O3 -fdefault-real-8 -ffree-form
+OPTS77 = -O3 -fdefault-real-8
+CCOPTS = -O -march=native -std=c99
+#MOPTS = -fno-automatic
+#MBOPTS = -fno-automatic
+#LOPTS =
+#LEGACY =
+
+##########################
 
 ESOBJS = libmpinit3.o libmppush3.o libvmppush3.o libmpsort3.o \
 libvmpsort3.o libmpgard3.o libvmpfft3.o libmpfield3.o libmpdiag3.o
@@ -148,7 +191,7 @@ modmpfft3.o modmpfield3.o modmpextdriv3.o
 
 EMMODS = modmpbpush3.o modmpcurd3.o
 
-EDMODS = modmpdpush3.o 
+EDMODS = modmpdpush3.o
 
 # Python
 
@@ -377,7 +420,7 @@ modmpfield3.o : modmpfield3.f90 libmpfield3_h.o
 modmpdiag3.o : modmpdiag3.f90 mppmod3.o libmpdiag3_h.o
 	$(FC90) $(OPTS90) -o modmpdiag3.o -c modmpdiag3.f90
 
-modmpextdriv3.o : modmpextdriv3.f90 input3mod.o modmpinit3.o 
+modmpextdriv3.o : modmpextdriv3.f90 input3mod.o  
 	$(FC90) $(OPTS90) -o modmpextdriv3.o -c modmpextdriv3.f90
 
 ompplib3.o : ompplib3.f90 modmpsort3.o modmpfft3.o modmpgard3.o mppmod3.o
@@ -389,7 +432,7 @@ mpsimul3.o : mpsimul3.f03 $(ESMODS) modmpdiag3.o mppmod3.o
 mpbsimul3.o : mpbsimul3.f03 mpsimul3.o $(EMMODS) modmpdiag3.o 
 	$(FC90) $(OPTS90) -o mpbsimul3.o -c $(FF03) mpbsimul3.f03
 
-mpdsimul3.o : mpdsimul3.f90 mpbsimul3.o $(EDMODS) modmpdiag3.o 
+mpdsimul3.o : mpdsimul3.f03 mpbsimul3.o $(EDMODS) modmpdiag3.o 
 	$(FC90) $(OPTS90) -o mpdsimul3.o -c $(FF03) mpdsimul3.f03
 
 mpbeps3.o : mpbeps3.f90 mpsimul3.o mppmod3.o omplib.o ompplib3.o

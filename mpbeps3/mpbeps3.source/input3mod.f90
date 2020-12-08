@@ -243,15 +243,11 @@
 ! Error Processing Parameter
 ! monitor = (0,1,2) = (disable,normal,extended) error processing
       integer :: monitor = 0
-!
-! External driver
-! driver_select = 0 for do nothing driver
-! driver_select = 1 for Laguerre Gaussian driver
+! External driver selector
       integer :: driver_select = 0
-      real :: amp = 0.0
-      real :: wavew = 1., spot_size = 100.
-      integer :: l1=0, l2=1
+! External driver parameters
       real :: timerise = 0.0, timeflat = 0.0, timefall = 0.0
+      real :: wavew = 1.0, amp = 1.0
 !
 ! define namelist
       namelist /input3/ idrun, idcode, indx, indy, indz, mx, my, mz,    &
@@ -266,11 +262,10 @@
      &npro, nferec, nfirec, ntv, ndv, nmv, nvft, nverec, nvirec, ntt,   &
      &ndt, nst, nprobt, vtsx, dvtx, ntrec, nts, nds, mvx, mvy, mvz,     &
      &nserec, nsirec, movion, emf, nustrt, ntr, idrun0, nvpp, imbalance,&
-     &monitor, driver_select, amp, wavew, spot_size, l1,l2,timerise,   &
-     &timeflat, timefall
+     &monitor, driver_select, timerise, timeflat, timefall, wavew, amp
 !
 ! equivalence data to simplify MPI broadcast
-      integer, parameter :: lnin3 = 122
+      integer, parameter :: lnin3 = 119
       double precision, dimension(lnin3) :: ddin3
       private :: lnin3, ddin3
       equivalence (ddin3(1),idrun), (ddin3(2),idcode), (ddin3(3),indx)
@@ -318,10 +313,9 @@
       equivalence (ddin3(109),ntr), (ddin3(110),idrun0)
       equivalence (ddin3(111),nvpp), (ddin3(112),imbalance)
       equivalence (ddin3(113),monitor), (ddin3(114),driver_select)
-      equivalence (ddin3(115), amp), (ddin3(116), wavew)
-      equivalence (ddin3(117), spot_size), (ddin3(118),l1)
-      equivalence (ddin3(119),l2),(ddin3(120),timerise)
-      equivalence (ddin3(121),timeflat), (ddin3(122),timefall)
+      equivalence (ddin3(115), timerise), (ddin3(116), timeflat)
+      equivalence (ddin3(117), timefall), (ddin3(118), wavew)
+      equivalence (ddin3(119), amp)
 !
 ! Electromagnetic Namelist
 ! External Magnetic Field Parameters:
